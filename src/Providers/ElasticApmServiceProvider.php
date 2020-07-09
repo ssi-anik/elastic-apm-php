@@ -4,7 +4,7 @@ namespace Anik\ElasticApm\Providers;
 
 use Anik\ElasticApm\Agent;
 use Anik\ElasticApm\Middleware\RecordForegroundTransaction;
-use Anik\ElasticApm\QuerySpan;
+use Anik\ElasticApm\Spans\QuerySpan;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\ServiceProvider;
 

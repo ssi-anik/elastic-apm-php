@@ -1,6 +1,6 @@
 <?php
 
-namespace Anik\ElasticApm;
+namespace Anik\ElasticApm\Spans;
 
 use Anik\ElasticApm\Contracts\SpanContract;
 
