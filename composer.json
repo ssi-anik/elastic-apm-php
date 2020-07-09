@@ -25,7 +25,9 @@
             "providers": [
                 "Anik\\ElasticApm\\Providers\\ElasticApmServiceProvider"
             ],
-            "aliases": {}
+            "aliases": {
+                "Agent": "Anik\\ElasticApm\\Facades\\Agent"
+            }
         }
     }
 }
