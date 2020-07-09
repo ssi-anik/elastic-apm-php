@@ -9,10 +9,16 @@ class QuerySpan implements SpanContract
     use SpanEmptyFieldsTrait;
     private $connection, $query, $executionTime;
 
-    public function __construct ($connection, $query, $executionTime) {
+    public function __construct (string $connection, string $query, float $executionTime) {
         $this->connection = $connection;
         $this->query = $query;
         $this->executionTime = $executionTime;
+    }
+
+    public function getLabels () : array {
+        return [
+            'execution_time' => $this->executionTime,
+        ];
     }
 
     public function getSpanData () : array {
