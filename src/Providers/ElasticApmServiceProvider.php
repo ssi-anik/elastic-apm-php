@@ -6,14 +6,22 @@ use Anik\ElasticApm\Agent;
 use Anik\ElasticApm\Middleware\RecordForegroundTransaction;
 use Anik\ElasticApm\Spans\QuerySpan;
 use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application as LumenApplication;
 
 class ElasticApmServiceProvider extends ServiceProvider
 {
     public function boot () {
-        if ($this->app->runningInConsole()) {
-            $this->publishAssets();
+        $source = realpath($raw = __DIR__ . '/../config/elastic-apm.php') ?: $raw;
+
+        if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
+            $this->publishes([ $source => config_path('elastic-apm.php') ]);
+        } elseif ($this->app instanceof LumenApplication) {
+            $this->app->configure('elastic-apm');
         }
+
+        $this->mergeConfigFrom($source, 'elastic-apm');
     }
 
     public function register () {
@@ -43,10 +51,6 @@ class ElasticApmServiceProvider extends ServiceProvider
 
     private function registerMiddleware () {
         $this->app->singleton(RecordForegroundTransaction::class);
-    }
-
-    private function publishAssets () {
-        $this->publishes([ __DIR__ . '/../config/elastic-apm.php' => config_path('elastic-apm.php'), ]);
     }
 
     public function provides () {
