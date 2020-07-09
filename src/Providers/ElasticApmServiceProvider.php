@@ -3,8 +3,8 @@
 namespace Anik\ElasticApm\Providers;
 
 use Anik\ElasticApm\Agent;
-use Anik\ElasticApm\Middleware\RecordBackgroundTransaction;
 use Anik\ElasticApm\Middleware\RecordForegroundTransaction;
+use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\ServiceProvider;
 
 class ElasticApmServiceProvider extends ServiceProvider
@@ -18,6 +18,15 @@ class ElasticApmServiceProvider extends ServiceProvider
     public function register () {
         $this->registerApmAgent();
         $this->registerMiddleware();
+        $this->registerQueryLogger();
+    }
+
+    private function registerQueryLogger () {
+        app('db')->listen(function (QueryExecuted $query) {
+            $sql = $query->sql;
+            $connection = $query->connection->getName();
+            $duration = $query->time;
+        });
     }
 
     private function registerApmAgent () {
