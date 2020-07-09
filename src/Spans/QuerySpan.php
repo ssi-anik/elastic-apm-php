@@ -28,7 +28,7 @@ class QuerySpan implements SpanContract
     }
 
     public function getType () : string {
-        return 'db';
+        return config('elastic-apm.types.query', 'db');
     }
 
     public function getSubType () : string {

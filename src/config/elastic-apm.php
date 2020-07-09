@@ -10,4 +10,9 @@ return [
     'error'       => [
         'trace_depth' => env('ELASTIC_APM_TRACE_DEPTH', 30),
     ],
+    'types'       => [
+        'query' => 'db',
+        'error' => 'error',
+        'http'  => 'external',
+    ],
 ];
