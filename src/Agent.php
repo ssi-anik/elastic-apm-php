@@ -2,9 +2,11 @@
 
 namespace Anik\ElasticApm;
 
+use Anik\ElasticApm\Contracts\SpanContract;
 use Anik\ElasticApm\Exceptions\RequirementMissingException;
 use Anik\ElasticApm\Exceptions\RequirementUnsatisfiedException;
 use Elastic\Apm\ElasticApm;
+use Elastic\Apm\TransactionInterface;
 
 class Agent
 {
@@ -12,7 +14,11 @@ class Agent
     /** @var \Anik\ElasticApm\Transaction $transaction */
     private $transaction;
 
+    /** @var array $spans */
+    private $spans;
+
     private function __construct () {
+        $this->spans = [];
     }
 
     public static function instance () {
@@ -29,7 +35,13 @@ class Agent
         return $this->transaction;
     }
 
-    private function getElasticApmTransaction () {
+    public function addSpan (SpanContract $span) {
+        $this->spans[] = $span;
+
+        return $this;
+    }
+
+    private function getElasticApmTransaction () : TransactionInterface {
         return ElasticApm::getCurrentTransaction();
     }
 
@@ -41,5 +53,18 @@ class Agent
         $apmTransaction = $this->getElasticApmTransaction();
         $apmTransaction->setName($this->transaction->getName());
         $apmTransaction->setType($this->transaction->getType());
+
+        foreach ( $this->spans as $span ) {
+            $this->includeSpansToTransaction($apmTransaction, $span);
+        }
+    }
+
+    private function includeSpansToTransaction (TransactionInterface $transaction, SpanContract $span) {
+        $childSpan = $transaction->beginChildSpan($span->getName(), $span->getType(), $span->getSubType());
+        if ($span->getLabelKey()) {
+            $childSpan->setLabel($span->getLabelKey(), $span->getLabelValue());
+        }
+        $childSpan->setAction(json_encode($span->getSpanData()));
+        $childSpan->end();
     }
 }

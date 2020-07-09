@@ -4,6 +4,7 @@ namespace Anik\ElasticApm\Providers;
 
 use Anik\ElasticApm\Agent;
 use Anik\ElasticApm\Middleware\RecordForegroundTransaction;
+use Anik\ElasticApm\QuerySpan;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,6 +27,8 @@ class ElasticApmServiceProvider extends ServiceProvider
             $sql = $query->sql;
             $connection = $query->connection->getName();
             $duration = $query->time;
+
+            app('apm-agent')->addSpan(new QuerySpan($connection, $sql, $duration));
         });
     }
 
