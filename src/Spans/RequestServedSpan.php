@@ -19,11 +19,11 @@ class RequestServedSpan implements SpanContract
     }
 
     public function getType () : string {
-        return 'request';
+        return config('elastic-apm.types.request', 'request');
     }
 
     public function getSubType () : string {
-        return 'served';
+        return 'processed';
     }
 
     public function getSpanData () : array {
