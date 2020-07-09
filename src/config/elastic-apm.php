@@ -7,4 +7,7 @@ return [
             'foreground' => 'request',
         ],
     ],
+    'error'       => [
+        'trace_depth' => env('ELASTIC_APM_TRACE_DEPTH', 30),
+    ],
 ];
