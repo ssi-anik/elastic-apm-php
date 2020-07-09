@@ -1,0 +1,31 @@
+{
+    "name": "anik/elastic-apm-php",
+    "description": "elastic/apm-agent-php wrapper to push PHP application transactions to APM Server",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Syed Sirajul Islam Anik",
+            "email": "sirajul.islam.anik@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "ext-elastic_apm": "*",
+        "php": ">=7.1",
+        "illuminate/support": "^6.0|^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Anik\\ElasticApm\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Anik\\ElasticApm\\Providers\\ElasticApmProvider"
+            ],
+            "aliases": {}
+        }
+    }
+}
