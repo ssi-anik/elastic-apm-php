@@ -4,7 +4,7 @@ namespace Anik\ElasticApm\Spans;
 
 use Anik\ElasticApm\Contracts\SpanContract;
 
-class RequestServedSpan implements SpanContract
+class RequestProcessedSpan implements SpanContract
 {
     use SpanEmptyFieldsTrait;
     private $transactionName, $data;

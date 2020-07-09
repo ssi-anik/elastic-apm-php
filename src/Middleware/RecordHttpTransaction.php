@@ -37,6 +37,7 @@ class RecordHttpTransaction
                 'positive'    => $statusCode >= 200 && $statusCode < 400,
                 'exception'   => null,
             ]));
+
             return $response;
         };
     }

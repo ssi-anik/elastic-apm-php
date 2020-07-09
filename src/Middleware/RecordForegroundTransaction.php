@@ -2,7 +2,7 @@
 
 namespace Anik\ElasticApm\Middleware;
 
-use Anik\ElasticApm\Spans\RequestServedSpan;
+use Anik\ElasticApm\Spans\RequestProcessedSpan;
 use Anik\ElasticApm\Transaction;
 use Closure;
 use Illuminate\Http\Request;
@@ -54,7 +54,7 @@ class RecordForegroundTransaction
     }
 
     public function terminate ($request, $response) {
-        app('apm-agent')->addSpan(new RequestServedSpan($this->getTransactionName($request), [
+        app('apm-agent')->addSpan(new RequestProcessedSpan($this->getTransactionName($request), [
             'now'             => now()->toDateTimeString(),
             'status_code'     => $response->getStatusCode(),
             'processing_time' => microtime(true) - LARAVEL_START,
