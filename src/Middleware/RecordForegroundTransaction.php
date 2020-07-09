@@ -58,6 +58,7 @@ class RecordForegroundTransaction
             'now'             => now()->toDateTimeString(),
             'status_code'     => $response->getStatusCode(),
             'processing_time' => microtime(true) - LARAVEL_START,
+            'user_agent'      => $request->userAgent(),
         ]));
         app('apm-agent')->capture();
     }
