@@ -23,7 +23,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Anik\\ElasticApm\\Providers\\ElasticApmProvider"
+                "Anik\\ElasticApm\\Providers\\ElasticApmServiceProvider"
             ],
             "aliases": {}
         }

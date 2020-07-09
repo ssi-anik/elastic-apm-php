@@ -4,7 +4,7 @@ namespace Anik\ElasticApm\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class ElasticApmProvider extends ServiceProvider
+class ElasticApmServiceProvider extends ServiceProvider
 {
     public function register () {
         $this->publishes([
