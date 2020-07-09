@@ -8,14 +8,7 @@ trait SpanEmptyFieldsTrait
         return '';
     }
 
-    public function getLabelKey () : string {
-        return '';
-    }
-
-    /**
-     * @return string|bool|int|float
-     */
-    public function getLabelValue () {
-        return '';
+    public function getLabels () : array {
+        return [];
     }
 }

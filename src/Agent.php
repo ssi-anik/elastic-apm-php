@@ -61,8 +61,11 @@ class Agent
 
     private function includeSpansToTransaction (TransactionInterface $transaction, SpanContract $span) {
         $childSpan = $transaction->beginChildSpan($span->getName(), $span->getType(), $span->getSubType());
-        if ($span->getLabelKey()) {
-            $childSpan->setLabel($span->getLabelKey(), $span->getLabelValue());
+        if ($labels = $span->getLabels()) {
+            foreach ( $labels as $key => $value ) {
+                $childSpan->setLabel($key, $value);
+
+            }
         }
         $childSpan->setAction(json_encode($span->getSpanData()));
         $childSpan->end();

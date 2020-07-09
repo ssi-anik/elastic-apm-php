@@ -16,12 +16,11 @@ class HttpRequestSpan implements SpanContract
         $this->options = $options;
     }
 
-    public function getLabelKey () : string {
-        return 'duration';
-    }
-
-    public function getLabelValue () {
-        return $this->duration;
+    public function getLabels () : array {
+        return [
+            'duration' => $this->duration,
+            'positive' => $this->options['positive'] ?? false,
+        ];
     }
 
     public function getName () : string {

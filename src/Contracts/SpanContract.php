@@ -12,9 +12,7 @@ interface SpanContract
 
     public function getAction () : string;
 
-    public function getLabelKey () : string;
-
-    public function getLabelValue ();
+    public function getLabels () : array;
 
     public function getSpanData () : array;
 }
