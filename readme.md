@@ -77,7 +77,7 @@ If you want to keep the records of Request received and served by your applicati
 class Kernel extends HttpKernel {
     protected $middleware = [
         // ...
-        Anik\ElasticApm\Middleware\RecordForegroundTransaction::class,
+        \Anik\ElasticApm\Middleware\RecordForegroundTransaction::class,
         // ..
     ];
 }
@@ -87,7 +87,7 @@ class Kernel extends HttpKernel {
 ```php
 $app->middleware([
     // ...
-    Anik\ElasticApm\Middleware\RecordForegroundTransaction::class,
+    \Anik\ElasticApm\Middleware\RecordForegroundTransaction::class,
     // ...
 ]);
 ```
@@ -100,10 +100,10 @@ HTTP Call tracking
 ---
 To track the HTTP calls, you'll need to use Guzzle. You can pass the `RecordHttpTransaction` class as your Guzzle's handler stack. It'll then record HTTP calls as well.
 ```php
-$stack = GuzzleHttp\HandlerStack::create();
-$stack->push(new Anik\ElasticApm\Middleware\RecordHttpTransaction(), 'whatever-you-wish');
+$stack = \GuzzleHttp\HandlerStack::create();
+$stack->push(new \Anik\ElasticApm\Middleware\RecordHttpTransaction(), 'whatever-you-wish');
 
-$client = new GuzzleHttp\Client([
+$client = new \GuzzleHttp\Client([
     'base_uri' => 'http://httpbin.org',
     'timeout'  => 10.0,
     'handler'  => $stack,
