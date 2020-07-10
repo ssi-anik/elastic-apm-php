@@ -12,7 +12,7 @@
     "minimum-stability": "stable",
     "require": {
         "ext-elastic_apm": "*",
-        "php": ">=7.1",
+        "php": "^7.2",
         "illuminate/support": "^6.0|^7.0"
     },
     "autoload": {
