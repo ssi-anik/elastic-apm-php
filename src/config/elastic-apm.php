@@ -18,12 +18,14 @@ return [
     // types of Spans
     'types'       => [
         // When a request is served by the Laravel/Lumen application
-        'request' => 'request',
+        'request'    => 'request',
         // When a db query is ran
-        'query'   => 'db',
+        'query'      => 'db',
         // When an error is captured the by the framework
-        'error'   => 'error',
+        'error'      => 'error',
         // When an HTTP call is made to remote servers
-        'http'    => 'external',
+        'http'       => 'external',
+        // When a background job pulled from the queue.
+        'background' => 'job',
     ],
 ];
