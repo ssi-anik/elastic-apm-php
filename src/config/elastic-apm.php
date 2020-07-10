@@ -1,8 +1,8 @@
 <?php
 return [
-    'active'      => env('ELASTIC_APM_ACTIVE', true),
+    'active'         => env('ELASTIC_APM_ACTIVE', true),
     // name for the transaction
-    'transaction' => [
+    'transaction'    => [
         'type' => [
             // A Job that will be processed by the Application
             'background' => 'queue',
@@ -10,13 +10,15 @@ return [
             'foreground' => 'request',
         ],
     ],
+    // 404 fallback, when no route match found.
+    'route_fallback' => 'index.php',
     // When an error occurred
-    'error'       => [
+    'error'          => [
         // Number of files to be included in the backtrace.
         'trace_depth' => env('ELASTIC_APM_TRACE_DEPTH', 30),
     ],
     // types of Spans
-    'types'       => [
+    'types'          => [
         // When a request is served by the Laravel/Lumen application
         'request'    => 'request',
         // When a db query is ran

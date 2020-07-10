@@ -54,7 +54,7 @@ class RecordForegroundTransaction
         }
 
         // Possibly 404
-        return 'index.php';
+        return config('elastic-apm.route_fallback', 'index.php');
     }
 
     public function terminate ($request, $response) {
