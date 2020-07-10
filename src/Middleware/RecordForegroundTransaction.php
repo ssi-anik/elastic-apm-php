@@ -12,6 +12,10 @@ class RecordForegroundTransaction
 {
     public function handle ($request, Closure $next) {
         $response = $next($request);
+        if (false === config('elastic-apm.active')) {
+            return $response;
+        }
+
         $transaction = new Transaction();
         $transaction->setName($this->getTransactionName($request))->setType($this->getTransactionType());
 
@@ -54,6 +58,10 @@ class RecordForegroundTransaction
     }
 
     public function terminate ($request, $response) {
+        if (false === config('elastic-apm.active')) {
+            return;
+        }
+
         app('apm-agent')->addSpan(new RequestProcessedSpan($this->getTransactionName($request), [
             'now'             => now()->toDateTimeString(),
             'status_code'     => $response->getStatusCode(),

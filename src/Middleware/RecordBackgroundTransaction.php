@@ -2,7 +2,6 @@
 
 namespace Anik\ElasticApm\Middleware;
 
-use Anik\ElasticApm\Agent;
 use Anik\ElasticApm\Spans\BackgroundJobSpan;
 use Anik\ElasticApm\Transaction;
 use Carbon\Carbon;
@@ -11,6 +10,9 @@ use Closure;
 class RecordBackgroundTransaction
 {
     public function handle ($job, Closure $next) {
+        if (false === config('elastic-apm.active')) {
+            return $next($job);
+        }
         // set transaction for the job
         $transaction = new Transaction();
         $transaction->setName($this->getTransactionName($job))->setType($this->getTransactionType());
