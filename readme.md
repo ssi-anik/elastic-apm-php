@@ -2,8 +2,8 @@ Elastic APM PHP
 ---
 
 ## Requirements
-- The package depends on elastic's [apm-php-agent](https://github.com/elastic/apm-agent-php) extension.
-- php ^7.2
+- The package depends on elastic's [apm-agent-php](https://github.com/elastic/apm-agent-php) extension.
+- php `^7.2`
 - If want to use with Laravel, Laravel version >= `6.x`.
 
 ## Installation
