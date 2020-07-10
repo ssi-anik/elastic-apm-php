@@ -21,6 +21,16 @@ class Agent
         $this->spans = [];
     }
 
+    public static function reset () : void {
+        static::$instance = null;
+    }
+
+    public static function reinstance () {
+        static::reset();
+
+        return static::instance();
+    }
+
     public static function instance () {
         return static::$instance ? static::$instance : (static::$instance = new self);
     }
@@ -41,7 +51,11 @@ class Agent
         return $this;
     }
 
-    private function getElasticApmTransaction () : TransactionInterface {
+    public function newApmTransaction ($name, $type) : TransactionInterface {
+        return ElasticApm::beginCurrentTransaction($name, $type);
+    }
+
+    public function getElasticApmTransaction () : TransactionInterface {
         return ElasticApm::getCurrentTransaction();
     }
 
@@ -59,12 +73,24 @@ class Agent
         }
     }
 
+    public function captureOnNew () {
+        if (!isset($this->transaction)) {
+            throw new RequirementMissingException('Transaction must be set');
+        }
+
+        $apmTransaction = $this->newApmTransaction($this->transaction->getName(), $this->transaction->getType());
+
+        foreach ( $this->spans as $span ) {
+            $this->includeSpansToTransaction($apmTransaction, $span);
+        }
+        $apmTransaction->end();
+    }
+
     private function includeSpansToTransaction (TransactionInterface $transaction, SpanContract $span) {
         $childSpan = $transaction->beginChildSpan($span->getName(), $span->getType(), $span->getSubType());
         if ($labels = $span->getLabels()) {
             foreach ( $labels as $key => $value ) {
                 $childSpan->setLabel($key, $value);
-
             }
         }
         $childSpan->setAction(json_encode($span->getSpanData()));
