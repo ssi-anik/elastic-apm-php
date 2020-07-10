@@ -22,15 +22,17 @@ class ElasticApmServiceProvider extends ServiceProvider
         }
 
         $this->mergeConfigFrom($source, 'elastic-apm');
+        if (config('elastic-apm.active') && config('elastic-apm.send_queries')) {
+            $this->listenExecutedQueries();
+        }
     }
 
     public function register () {
         $this->registerApmAgent();
         $this->registerMiddleware();
-        $this->registerQueryLogger();
     }
 
-    private function registerQueryLogger () {
+    private function listenExecutedQueries () {
         app('db')->listen(function (QueryExecuted $query) {
             $sql = $query->sql;
             $connection = $query->connection->getName();
