@@ -26,8 +26,8 @@ class Handler implements ExceptionHandler
         $depth = config('elastic-apm.error.trace_depth', 30);
         $traces = collect($e->getTrace())->take($depth)->map(function ($trace) {
             return [
-                'file' => $trace['file'],
-                'line' => $trace['line'],
+                'file/func' => $trace['file'] ?? ($trace['function'] ?? 'N/A'),
+                'line'      => $trace['line'] ?? 'N/A',
             ];
         });
         app('apm-agent')->addSpan(new ErrorSpan($e, $traces));
