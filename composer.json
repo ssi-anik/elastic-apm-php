@@ -9,6 +9,7 @@
             "email": "sirajul.islam.anik@gmail.com"
         }
     ],
+    "minimum-stability": "stable",
     "require": {
         "ext-elastic_apm": "*",
         "php": "^7.2",
