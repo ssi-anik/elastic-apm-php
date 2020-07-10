@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static string instance()
+ * @method static void reset()
+ * @method static \Anik\ElasticApm\Agent reinstance()
  * @method static ElasticAgent setTransaction(Transaction $transaction)
  * @method static Transaction|null getTransaction(Transaction $transaction)
  * @method static void capture()
