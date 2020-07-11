@@ -49,8 +49,8 @@ class ElasticApmServiceProvider extends ServiceProvider
     }
 
     private function listenExecutedRedis () {
+        app('redis')->enableEvents();
         app('redis')->listen(function (CommandExecuted $command) {
-            app('log')->info('logging cache');
             $cmd = $command->command;
             $connection = $command->connectionName;
             $duration = $command->time;
