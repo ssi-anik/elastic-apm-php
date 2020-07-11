@@ -10,6 +10,10 @@ return [
      */
     'send_queries'   => env('ELASTIC_APM_SEND_QUERIES', true),
     /**
+     * Enable Redis Query logging to APM server
+     */
+    'send_redis'     => env('ELASTIC_APM_SEND_REDIS', false),
+    /**
      * name for the transaction
      */
     'transaction'    => [
@@ -49,6 +53,10 @@ return [
          * When a db query is ran
          */
         'query'      => 'db',
+        /**
+         * When a redis query is ran
+         */
+        'redis'      => 'redis',
         /**
          * When an error is captured the by the framework
          */

@@ -5,8 +5,10 @@ namespace Anik\ElasticApm\Providers;
 use Anik\ElasticApm\Agent;
 use Anik\ElasticApm\Middleware\RecordForegroundTransaction;
 use Anik\ElasticApm\Spans\QuerySpan;
+use Anik\ElasticApm\Spans\RedisSpan;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Foundation\Application as LaravelApplication;
+use Illuminate\Redis\Events\CommandExecuted;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application as LumenApplication;
 
@@ -25,6 +27,10 @@ class ElasticApmServiceProvider extends ServiceProvider
         if (config('elastic-apm.active') && config('elastic-apm.send_queries')) {
             $this->listenExecutedQueries();
         }
+
+        if (config('elastic-apm.active') && config('elastic-apm.send_redis')) {
+            $this->listenExecutedRedis();
+        }
     }
 
     public function register () {
@@ -39,6 +45,17 @@ class ElasticApmServiceProvider extends ServiceProvider
             $duration = $query->time;
 
             app('apm-agent')->addSpan(new QuerySpan($connection, $sql, $duration));
+        });
+    }
+
+    private function listenExecutedRedis () {
+        app('redis')->listen(function (CommandExecuted $command) {
+            app('log')->info('logging cache');
+            $cmd = $command->command;
+            $connection = $command->connectionName;
+            $duration = $command->time;
+
+            app('apm-agent')->addSpan(new RedisSpan($connection, $cmd, $duration));
         });
     }
 
