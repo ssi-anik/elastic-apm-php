@@ -16,12 +16,16 @@ class RecordForegroundTransaction
             return $response;
         }
 
+        $this->setupTransaction($request);
+
+        return $response;
+    }
+
+    private function setupTransaction ($request) {
         $transaction = new Transaction();
         $transaction->setName($this->getTransactionName($request))->setType($this->getTransactionType());
 
         app('apm-agent')->setTransaction($transaction);
-
-        return $response;
     }
 
     private function getTransactionType () {
@@ -60,6 +64,15 @@ class RecordForegroundTransaction
     public function terminate ($request, $response) {
         if (false === config('elastic-apm.active')) {
             return;
+        }
+
+        /**
+         * $this->handle() method couldn't setup the transaction
+         * because error occurred before reaching handling the after middleware
+         * and handled by Exception Handler.
+         */
+        if (!app('apm-agent')->getTransaction()) {
+            $this->setupTransaction($request);
         }
 
         app('apm-agent')->addSpan(new RequestProcessedSpan($this->getTransactionName($request), [
