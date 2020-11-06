@@ -6,8 +6,9 @@ use Anik\ElasticApm\Spans\ErrorSpan;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
-class Handler implements ExceptionHandler
+class HandlerThrowable implements ExceptionHandler
 {
     private $primaryHandler;
     private $ignoredExceptions = [
@@ -45,7 +46,7 @@ class Handler implements ExceptionHandler
         return true;
     }
 
-    public function report (Exception $e) {
+    public function report (Throwable $e) {
         // primary handler => (mainly) App\Exceptions\Handler.php will handle Error logging on application log.
         $this->primaryHandler->report($e);
 
@@ -54,11 +55,11 @@ class Handler implements ExceptionHandler
         }
     }
 
-    public function render ($request, Exception $e) {
+    public function render ($request, Throwable $e) {
         return $this->primaryHandler->render($request, $e);
     }
 
-    public function renderForConsole ($output, Exception $e) {
+    public function renderForConsole ($output, Throwable $e) {
         return $this->primaryHandler->renderForConsole($output, $e);
     }
 }
