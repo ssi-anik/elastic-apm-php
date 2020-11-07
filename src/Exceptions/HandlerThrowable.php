@@ -3,9 +3,9 @@
 namespace Anik\ElasticApm\Exceptions;
 
 use Anik\ElasticApm\Spans\ErrorSpan;
-use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Exception;
 use Throwable;
 
 class HandlerThrowable implements ExceptionHandler
@@ -23,7 +23,7 @@ class HandlerThrowable implements ExceptionHandler
         }
     }
 
-    private function logException (Exception $e) {
+    private function logException (Throwable $e) {
         $depth = config('elastic-apm.error.trace_depth', 30);
         $traces = collect($e->getTrace())->take($depth)->map(function ($trace) {
             return [
@@ -31,7 +31,7 @@ class HandlerThrowable implements ExceptionHandler
                 'line'      => $trace['line'] ?? 'N/A',
             ];
         });
-        app('apm-agent')->addSpan(new ErrorSpan($e, $traces));
+        app('apm-agent')->addSpan(new ErrorSpan(new Exception($e->getMessage(), $e->getCode()), $traces));
 
         return;
     }
