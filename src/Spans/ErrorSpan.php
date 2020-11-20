@@ -3,8 +3,8 @@
 namespace Anik\ElasticApm\Spans;
 
 use Anik\ElasticApm\Contracts\SpanContract;
-use Exception;
 use Illuminate\Support\Collection;
+use Throwable;
 
 class ErrorSpan implements SpanContract
 {
@@ -12,7 +12,7 @@ class ErrorSpan implements SpanContract
 
     private $traces, $exception;
 
-    public function __construct (Exception $e, Collection $traces) {
+    public function __construct (Throwable $e, Collection $traces) {
         $this->exception = $e;
         $this->traces = $traces;
     }

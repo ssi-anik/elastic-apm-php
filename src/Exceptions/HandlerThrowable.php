@@ -31,7 +31,7 @@ class HandlerThrowable implements ExceptionHandler
                 'line'      => $trace['line'] ?? 'N/A',
             ];
         });
-        app('apm-agent')->addSpan(new ErrorSpan(new Exception($e->getMessage(), $e->getCode()), $traces));
+        app('apm-agent')->addSpan(new ErrorSpan($e, $traces));
 
         return;
     }
