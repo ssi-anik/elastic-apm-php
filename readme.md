@@ -39,9 +39,19 @@ $app->singleton(
 );
 ```
 ```php
-// USE THIS SECTION
+// USE THIS SECTION FOR LARAVEL <= 7
 $app->singleton(Illuminate\Contracts\Debug\ExceptionHandler::class, function ($app) {
     return new Anik\ElasticApm\Exceptions\Handler(new App\Exceptions\Handler($app), [
+        // NotFoundHttpException::class, // (1)
+        // ConnectException::class, // (2)
+    ]);
+});
+```
+
+```php
+// USE THIS SECTION FOR LARAVEL >= 8
+$app->singleton(Illuminate\Contracts\Debug\ExceptionHandler::class, function ($app) {
+    return new Anik\ElasticApm\Exceptions\HandlerThrowable(new App\Exceptions\Handler($app), [
         // NotFoundHttpException::class, // (1)
         // ConnectException::class, // (2)
     ]);
@@ -58,9 +68,19 @@ $app->singleton(
 ```
 
 ```php
-// USE THIS SECTION
+// USE THIS SECTION FOR LUMEN <= 7
 $app->singleton(Illuminate\Contracts\Debug\ExceptionHandler::class, function ($app) {
     return new Anik\ElasticApm\Exceptions\Handler(new App\Exceptions\Handler(), [
+        // NotFoundHttpException::class, // (1)
+        // ConnectException::class, // (2)
+    ]);
+});
+```
+
+```php
+// USE THIS SECTION FOR LUMEN >= 8
+$app->singleton(Illuminate\Contracts\Debug\ExceptionHandler::class, function ($app) {
+    return new Anik\ElasticApm\Exceptions\HandlerThrowable(new App\Exceptions\Handler(), [
         // NotFoundHttpException::class, // (1)
         // ConnectException::class, // (2)
     ]);
