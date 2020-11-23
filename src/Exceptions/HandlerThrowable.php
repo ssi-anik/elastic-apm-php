@@ -5,7 +5,6 @@ namespace Anik\ElasticApm\Exceptions;
 use Anik\ElasticApm\Spans\ErrorSpan;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Exception;
 use Throwable;
 
 class HandlerThrowable implements ExceptionHandler
