@@ -84,11 +84,11 @@ class RecordForegroundTransaction
             new RequestProcessedSpan(
                 $this->getTransactionName($request),
                 [
-                'now' => now()->toDateTimeString(),
-                'status_code' => $response->getStatusCode(),
-                'path' => $request->path(),
-                'processing_time' => microtime(true) - LARAVEL_START,
-                'user_agent' => $request->userAgent(),
+                    'now' => now()->toDateTimeString(),
+                    'status_code' => $response->getStatusCode(),
+                    'path' => $request->path(),
+                    'processing_time' => microtime(true) - LARAVEL_START,
+                    'user_agent' => $request->userAgent(),
                 ]
             )
         );

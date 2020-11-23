@@ -43,11 +43,11 @@ class RecordHttpTransaction
                     $path,
                     $duration,
                     [
-                             'method' => $method,
-                             'status_code' => $statusCode,
-                             'positive' => $statusCode >= 200 && $statusCode < 400,
-                             'exception' => null,
-                         ]
+                        'method' => $method,
+                        'status_code' => $statusCode,
+                        'positive' => $statusCode >= 200 && $statusCode < 400,
+                        'exception' => null,
+                    ]
                 )
             );
 
