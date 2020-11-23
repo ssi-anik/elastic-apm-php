@@ -4,19 +4,19 @@ return [
     /**
      * Enable / Disable APM operations
      */
-    'active'         => env('ELASTIC_APM_ACTIVE', true),
+    'active' => env('ELASTIC_APM_ACTIVE', true),
     /**
      * Enable Query logging to APM server
      */
-    'send_queries'   => env('ELASTIC_APM_SEND_QUERIES', true),
+    'send_queries' => env('ELASTIC_APM_SEND_QUERIES', true),
     /**
      * Enable Redis Query logging to APM server
      */
-    'send_redis'     => env('ELASTIC_APM_SEND_REDIS', false),
+    'send_redis' => env('ELASTIC_APM_SEND_REDIS', false),
     /**
      * name for the transaction
      */
-    'transaction'    => [
+    'transaction' => [
         'type' => [
             /**
              * A Job that will be processed by the Application
@@ -35,7 +35,7 @@ return [
     /**
      * When an error occurred
      */
-    'error'          => [
+    'error' => [
         /**
          * Number of files to be included in the backtrace.
          */
@@ -44,27 +44,27 @@ return [
     /**
      * types of Spans
      */
-    'types'          => [
+    'types' => [
         /**
          * When a request is served by the Laravel/Lumen application
          */
-        'request'    => 'request',
+        'request' => 'request',
         /**
          * When a db query is ran
          */
-        'query'      => 'db',
+        'query' => 'db',
         /**
          * When a redis query is ran
          */
-        'redis'      => 'redis',
+        'redis' => 'redis',
         /**
          * When an error is captured the by the framework
          */
-        'error'      => 'error',
+        'error' => 'error',
         /**
          * When an HTTP call is made to remote servers
          */
-        'http'       => 'external',
+        'http' => 'external',
         /**
          * When a background job pulled from the queue.
          */

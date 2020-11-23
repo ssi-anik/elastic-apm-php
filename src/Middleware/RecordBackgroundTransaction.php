@@ -9,7 +9,8 @@ use Closure;
 
 class RecordBackgroundTransaction
 {
-    public function handle ($job, Closure $next) {
+    public function handle($job, Closure $next)
+    {
         if (false === config('elastic-apm.active')) {
             return $next($job);
         }
@@ -29,11 +30,13 @@ class RecordBackgroundTransaction
         return $response;
     }
 
-    private function getTransactionName ($job) {
+    private function getTransactionName($job)
+    {
         return get_class($job);
     }
 
-    private function getTransactionType () {
+    private function getTransactionType()
+    {
         return config('elastic-apm.transaction.type.background', 'queue');
     }
 }

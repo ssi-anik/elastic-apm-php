@@ -10,26 +10,33 @@ class ErrorSpan implements SpanContract
 {
     use SpanEmptyFieldsTrait;
 
-    private $traces, $exception;
+    private $traces;
 
-    public function __construct (Throwable $e, Collection $traces) {
+    private $exception;
+
+    public function __construct(Throwable $e, Collection $traces)
+    {
         $this->exception = $e;
         $this->traces = $traces;
     }
 
-    public function getSpanData () : array {
+    public function getSpanData(): array
+    {
         return $this->traces->toArray();
     }
 
-    public function getName () : string {
+    public function getName(): string
+    {
         return get_class($this->exception);
     }
 
-    public function getType () : string {
+    public function getType(): string
+    {
         return config('elastic-apm.types.error', 'error');
     }
 
-    public function getSubType () : string {
+    public function getSubType(): string
+    {
         return class_basename($this->exception);
     }
 }

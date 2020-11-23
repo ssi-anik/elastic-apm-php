@@ -29,5 +29,13 @@
                 "Agent": "Anik\\ElasticApm\\Facades\\Agent"
             }
         }
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.5"
+    },
+    "scripts": {
+        "test": [
+            "./vendor/bin/phpcs --standard=PSR12 ./src"
+        ]
     }
 }

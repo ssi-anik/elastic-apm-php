@@ -14,7 +14,8 @@ class Handler implements ExceptionHandler
         NotFoundHttpException::class,
     ];
 
-    public function __construct (ExceptionHandler $primaryHandler, array $ignoredExceptions = []) {
+    public function __construct(ExceptionHandler $primaryHandler, array $ignoredExceptions = [])
+    {
         $this->primaryHandler = $primaryHandler;
 
         if ($ignoredExceptions) {
@@ -22,21 +23,25 @@ class Handler implements ExceptionHandler
         }
     }
 
-    private function logException (Exception $e) {
+    private function logException(Exception $e)
+    {
         $depth = config('elastic-apm.error.trace_depth', 30);
-        $traces = collect($e->getTrace())->take($depth)->map(function ($trace) {
-            return [
-                'file/func' => $trace['file'] ?? ($trace['function'] ?? 'N/A'),
-                'line'      => $trace['line'] ?? 'N/A',
-            ];
-        });
+        $traces = collect($e->getTrace())->take($depth)->map(
+            function ($trace) {
+                return [
+                    'file/func' => $trace['file'] ?? ($trace['function'] ?? 'N/A'),
+                    'line' => $trace['line'] ?? 'N/A',
+                ];
+            }
+        );
         app('apm-agent')->addSpan(new ErrorSpan($e, $traces));
 
         return;
     }
 
-    public function shouldReport ($e) {
-        foreach ( $this->ignoredExceptions as $type ) {
+    public function shouldReport($e)
+    {
+        foreach ($this->ignoredExceptions as $type) {
             if ($e instanceof $type) {
                 return false;
             }
@@ -45,7 +50,8 @@ class Handler implements ExceptionHandler
         return true;
     }
 
-    public function report (Exception $e) {
+    public function report(Exception $e)
+    {
         // primary handler => (mainly) App\Exceptions\Handler.php will handle Error logging on application log.
         $this->primaryHandler->report($e);
 
@@ -54,11 +60,13 @@ class Handler implements ExceptionHandler
         }
     }
 
-    public function render ($request, Exception $e) {
+    public function render($request, Exception $e)
+    {
         return $this->primaryHandler->render($request, $e);
     }
 
-    public function renderForConsole ($output, Exception $e) {
+    public function renderForConsole($output, Exception $e)
+    {
         return $this->primaryHandler->renderForConsole($output, $e);
     }
 }
