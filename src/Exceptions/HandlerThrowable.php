@@ -5,7 +5,6 @@ namespace Anik\ElasticApm\Exceptions;
 use Anik\ElasticApm\Spans\ErrorSpan;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Exception;
 use Throwable;
 
 class HandlerThrowable implements ExceptionHandler
@@ -15,7 +14,8 @@ class HandlerThrowable implements ExceptionHandler
         NotFoundHttpException::class,
     ];
 
-    public function __construct (ExceptionHandler $primaryHandler, array $ignoredExceptions = []) {
+    public function __construct(ExceptionHandler $primaryHandler, array $ignoredExceptions = [])
+    {
         $this->primaryHandler = $primaryHandler;
 
         if ($ignoredExceptions) {
@@ -23,21 +23,25 @@ class HandlerThrowable implements ExceptionHandler
         }
     }
 
-    private function logException (Throwable $e) {
+    private function logException(Throwable $e)
+    {
         $depth = config('elastic-apm.error.trace_depth', 30);
-        $traces = collect($e->getTrace())->take($depth)->map(function ($trace) {
-            return [
-                'file/func' => $trace['file'] ?? ($trace['function'] ?? 'N/A'),
-                'line'      => $trace['line'] ?? 'N/A',
-            ];
-        });
+        $traces = collect($e->getTrace())->take($depth)->map(
+            function ($trace) {
+                return [
+                    'file/func' => $trace['file'] ?? ($trace['function'] ?? 'N/A'),
+                    'line' => $trace['line'] ?? 'N/A',
+                ];
+            }
+        );
         app('apm-agent')->addSpan(new ErrorSpan($e, $traces));
 
         return;
     }
 
-    public function shouldReport ($e) {
-        foreach ( $this->ignoredExceptions as $type ) {
+    public function shouldReport($e)
+    {
+        foreach ($this->ignoredExceptions as $type) {
             if ($e instanceof $type) {
                 return false;
             }
@@ -46,7 +50,8 @@ class HandlerThrowable implements ExceptionHandler
         return true;
     }
 
-    public function report (Throwable $e) {
+    public function report(Throwable $e)
+    {
         // primary handler => (mainly) App\Exceptions\Handler.php will handle Error logging on application log.
         $this->primaryHandler->report($e);
 
@@ -55,11 +60,13 @@ class HandlerThrowable implements ExceptionHandler
         }
     }
 
-    public function render ($request, Throwable $e) {
+    public function render($request, Throwable $e)
+    {
         return $this->primaryHandler->render($request, $e);
     }
 
-    public function renderForConsole ($output, Throwable $e) {
+    public function renderForConsole($output, Throwable $e)
+    {
         return $this->primaryHandler->renderForConsole($output, $e);
     }
 }

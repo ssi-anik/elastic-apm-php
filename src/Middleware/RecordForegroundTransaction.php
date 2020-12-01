@@ -10,7 +10,8 @@ use Illuminate\Routing\Route;
 
 class RecordForegroundTransaction
 {
-    public function handle ($request, Closure $next) {
+    public function handle($request, Closure $next)
+    {
         $response = $next($request);
         if (false === config('elastic-apm.active')) {
             return $response;
@@ -21,18 +22,21 @@ class RecordForegroundTransaction
         return $response;
     }
 
-    private function setupTransaction ($request) {
+    private function setupTransaction($request)
+    {
         $transaction = new Transaction();
         $transaction->setName($this->getTransactionName($request))->setType($this->getTransactionType());
 
         app('apm-agent')->setTransaction($transaction);
     }
 
-    private function getTransactionType () {
+    private function getTransactionType()
+    {
         return config('elastic-apm.transaction.type.foreground', 'request');
     }
 
-    private function getTransactionName (Request $request) {
+    private function getTransactionName(Request $request)
+    {
         $route = $request->route();
         // Lumen returns ARRAY.
         if (is_array($route)) {
@@ -61,7 +65,8 @@ class RecordForegroundTransaction
         return config('elastic-apm.route_fallback', 'index.php');
     }
 
-    public function terminate ($request, $response) {
+    public function terminate($request, $response)
+    {
         if (false === config('elastic-apm.active')) {
             return;
         }
@@ -75,13 +80,18 @@ class RecordForegroundTransaction
             $this->setupTransaction($request);
         }
 
-        app('apm-agent')->addSpan(new RequestProcessedSpan($this->getTransactionName($request), [
-            'now'             => now()->toDateTimeString(),
-            'status_code'     => $response->getStatusCode(),
-            'path'            => $request->path(),
-            'processing_time' => microtime(true) - LARAVEL_START,
-            'user_agent'      => $request->userAgent(),
-        ]));
+        app('apm-agent')->addSpan(
+            new RequestProcessedSpan(
+                $this->getTransactionName($request),
+                [
+                    'now' => now()->toDateTimeString(),
+                    'status_code' => $response->getStatusCode(),
+                    'path' => $request->path(),
+                    'processing_time' => microtime(true) - LARAVEL_START,
+                    'user_agent' => $request->userAgent(),
+                ]
+            )
+        );
         app('apm-agent')->capture();
     }
 }
