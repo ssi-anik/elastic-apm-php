@@ -102,7 +102,7 @@ class Agent
         $childSpan = $transaction->beginChildSpan($span->getName(), $span->getType(), $span->getSubType());
         if ($labels = $span->getLabels()) {
             foreach ($labels as $key => $value) {
-                $childSpan->setLabel($key, $value);
+                $childSpan->context()->setLabel($key, $value);
             }
         }
         $childSpan->setAction(json_encode($span->getSpanData()));
