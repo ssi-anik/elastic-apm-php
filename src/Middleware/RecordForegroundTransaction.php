@@ -7,6 +7,7 @@ use Anik\ElasticApm\Transaction;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
+use Carbon\Carbon;
 
 class RecordForegroundTransaction
 {
@@ -84,7 +85,7 @@ class RecordForegroundTransaction
             new RequestProcessedSpan(
                 $this->getTransactionName($request),
                 [
-                    'now' => now()->toDateTimeString(),
+                    'now' => Carbon::now(),
                     'status_code' => $response->getStatusCode(),
                     'path' => $request->path(),
                     'processing_time' => microtime(true) - LARAVEL_START,
